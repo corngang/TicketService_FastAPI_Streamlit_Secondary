@@ -93,6 +93,8 @@ with col4:
 
 
 # region 이미지 선택 (4개의 이미지를 한 번에 표시)
+print(f"{image_list_path} : image_list_path==============")
+print(f"{ticket_list} : ticket_list=================")
 img = image_select(
     label="",
     images=[
@@ -104,7 +106,10 @@ img = image_select(
     captions=ticket_list
 )
 
+print(f"{img.filename}: img.filename==================")
+
 filename = os.path.basename(img.filename).split(".")[0]
+print(f"{filename}: filename=================")
 resized_img = img.resize((image_width, image_height))
 
 # 이미지 선택 후 session_state에 저장
