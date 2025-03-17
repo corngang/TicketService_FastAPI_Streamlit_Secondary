@@ -7,7 +7,7 @@ from common.image_desc import ne1, iu, KimJaeJoong, Imhero
 
 
 def stream_data(filename):
-    file_dict = {"2NE1": ne1, "IU": iu, "KimJaeJoong": KimJaeJoong, "임영웅": Imhero}
+    file_dict = {"2NE1": ne1, "IU": iu, "KimJaeJoong": KimJaeJoong, "IMHero": Imhero}
 
     for word in file_dict[filename].split(" "):
         yield word + " "
