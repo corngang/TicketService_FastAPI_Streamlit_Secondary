@@ -52,7 +52,7 @@ def auth_callback(auth_request: AuthRequest):
             "client_secret": CLIENT_SECRET,
             "code": auth_request.code,
             "redirect_uri": APP_URI,
-            "scope": "openid email phone"
+            "scope": "openid profile email phone"
         }
 
         # 액세스 토큰 요청

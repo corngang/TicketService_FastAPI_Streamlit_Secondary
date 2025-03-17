@@ -3,7 +3,6 @@ from PIL import Image
 from streamlit_image_select import image_select
 import numpy as np
 import os, time
-import authenticate as authenticate
 import requests
 from image_desc import ne1, iu, KimJaeJoong, Imhero
 import jwt
@@ -42,7 +41,7 @@ def logout():
     st.markdown(f'<meta http-equiv="refresh" content="0;url={response.url}">', unsafe_allow_html=True)
 
 # region image path 정보
-abs_img_path = '/TicketService_FastAPI_Streamlit/cognito/streamlit/images'
+abs_img_path = '/TicketService_FastAPI_Streamlit/cognito_split/streamlit/images'
 image_list = os.listdir(f"{abs_img_path}/ticket")
 image_list_path = sorted(os.path.join(f"{abs_img_path}/ticket", file_name) for file_name in image_list) # image list contain .jpg
 ticket_list = sorted([i.split(".")[0] for i in image_list]) # no .jpg

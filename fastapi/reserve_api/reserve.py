@@ -39,7 +39,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
     return user_info  # 디코딩된 사용자 정보 반환
 
 
-@app.post("/verify_user_info")
+@app.post("/reserve/verify_user_info")
 def verify_user_info(user_info: dict = Depends(get_current_user)):  # 이미 디코딩된 값을 받음
     account_id = user_info.get("sub")  # 토큰에서 가져온 id
     query = "SELECT name, phone_number, birth FROM account WHERE account_id = %s"
@@ -57,7 +57,7 @@ def verify_user_info(user_info: dict = Depends(get_current_user)):  # 이미 디
 
 
 
-@app.get("/ticket/{ticket_name}", response_model=TicketInfo)
+@app.get("/reserve/ticket/{ticket_name}", response_model=TicketInfo)
 def read_ticket_info(ticket_name: str):
     query = "SELECT ticket_id, description FROM ticket_info WHERE name = %s"
     ticket_data = select_query(query, (ticket_name,))

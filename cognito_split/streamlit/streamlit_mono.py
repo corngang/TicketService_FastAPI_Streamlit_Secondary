@@ -1,5 +1,4 @@
 import streamlit as st
-import authenticate as authenticate
 
 
 pg = st.navigation([
