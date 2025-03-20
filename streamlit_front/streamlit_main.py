@@ -13,7 +13,7 @@ def stream_data(filename):
         yield word + " "
         time.sleep(0.02)
 
-print(11111111111111111111111111111111111111111111111111111111111111111111111)
+print(2222222222222222222222222222222222222222222222222222222)
 
 # region image path 정보
 abs_img_path = '/TicketService_FastAPI_Streamlit/streamlit_front/images'
