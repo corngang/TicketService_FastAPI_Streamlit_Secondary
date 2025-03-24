@@ -1,5 +1,6 @@
 import streamlit as st
-
+from prometheus_client import start_http_server, Summary
+import time
 
 def logout():
     # if st.button("Log out"):
@@ -30,3 +31,17 @@ else:
 pg.run()
 
 # print(st.session_state.logged_in)
+############ prometheus ###########
+@st.cache_resource
+def start_prometheus_server():
+    start_http_server(8000)  # Prometheus metrics endpoint for frontend
+
+# 처음에만 Prometheus 서버 시작
+if "prometheus_started" not in st.session_state:
+    st.session_state.prometheus_started = False
+
+if not st.session_state.prometheus_started:
+    start_prometheus_server()  # 서버가 아직 시작되지 않았다면 Prometheus 서버를 시작
+    st.session_state.prometheus_started = True  # 서버 시작을 완료했음을 표시
+
+############ prometheus ###########

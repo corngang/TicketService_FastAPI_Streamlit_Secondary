@@ -42,21 +42,6 @@ st.set_page_config(page_title="HAO TICKET", page_icon="🎟️")
 # 여백을 주기 위한 마크다운 수정
 st.markdown('<style>div.block-container {padding-top: 3rem; padding-bottom: 1rem;}</style>', unsafe_allow_html=True)
 
-############ prometheus ###########
-@st.cache_resource
-def start_prometheus_server():
-    start_http_server(8000)  # Prometheus metrics endpoint for frontend
-
-# 처음에만 Prometheus 서버 시작
-if "prometheus_started" not in st.session_state:
-    st.session_state.prometheus_started = False
-
-if not st.session_state.prometheus_started:
-    start_prometheus_server()  # 서버가 아직 시작되지 않았다면 Prometheus 서버를 시작
-    st.session_state.prometheus_started = True  # 서버 시작을 완료했음을 표시
-
-############ prometheus ###########
-
 
 # 두 개의 열로 나누기: 첫 번째 열은 이미지, 두 번째 열은 타이틀 텍스트
 col1, col2 = st.columns([1, 4])  # 첫 번째 열은 좁고, 두 번째 열은 넓게
