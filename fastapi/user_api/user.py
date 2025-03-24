@@ -50,7 +50,7 @@ def join_user(request: UserRequest):
     
     # 사용자 저장
     query = "INSERT INTO account (account_id, name, password, phone_number, birth) VALUES (%s, %s, %s, %s, %s)"
-    parms = (request.username, request.name, request.password, request.phone_number, request.birth)
+    parms = (request.username, request.name, request.password, f'+82{request.phone_number}', request.birth)
     insert_query(query, parms)
 
     # JWT 토큰 생성
