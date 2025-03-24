@@ -4,6 +4,13 @@ from streamlit_image_select import image_select
 import numpy as np
 import os, time
 from common.image_desc import ne1, iu, KimJaeJoong, Imhero
+from prometheus_client import start_http_server, Summary
+import time
+
+# 이미지 파일 로딩을 캐시하기
+@st.cache_resource
+def load_image(image_path):
+    return Image.open(image_path)
 
 
 def stream_data(filename):
@@ -12,8 +19,6 @@ def stream_data(filename):
     for word in file_dict[filename].split(" "):
         yield word + " "
         time.sleep(0.02)
-
-print(2222222222222222222222222222222222222222222222222222222)
 
 # region image path 정보
 abs_img_path = '/TicketService_FastAPI_Streamlit/streamlit_front/images'
@@ -37,12 +42,28 @@ st.set_page_config(page_title="HAO TICKET", page_icon="🎟️")
 # 여백을 주기 위한 마크다운 수정
 st.markdown('<style>div.block-container {padding-top: 3rem; padding-bottom: 1rem;}</style>', unsafe_allow_html=True)
 
+############ prometheus ###########
+@st.cache_resource
+def start_prometheus_server():
+    start_http_server(8000)  # Prometheus metrics endpoint for frontend
+
+# 처음에만 Prometheus 서버 시작
+if "prometheus_started" not in st.session_state:
+    st.session_state.prometheus_started = False
+
+if not st.session_state.prometheus_started:
+    start_prometheus_server()  # 서버가 아직 시작되지 않았다면 Prometheus 서버를 시작
+    st.session_state.prometheus_started = True  # 서버 시작을 완료했음을 표시
+
+############ prometheus ###########
+
+
 # 두 개의 열로 나누기: 첫 번째 열은 이미지, 두 번째 열은 타이틀 텍스트
 col1, col2 = st.columns([1, 4])  # 첫 번째 열은 좁고, 두 번째 열은 넓게
 
 # 이미지 표시 (첫 번째 열에)
 with col1:
-    img = Image.open(top_img_path)
+    img = load_image(top_img_path)
     st.image(img, width=100)  # 이미지 크기를 100px로 설정
 
 # 타이틀 텍스트 표시 (두 번째 열에, 이미지 중간에 맞추기)
@@ -95,23 +116,18 @@ with col4:
 
 
 # region 이미지 선택 (4개의 이미지를 한 번에 표시)
-print(f"{image_list_path} : image_list_path==============")
-print(f"{ticket_list} : ticket_list=================")
 img = image_select(
     label="",
     images=[
-        Image.open(image_list_path[0]),
-        Image.open(image_list_path[1]),
-        Image.open(image_list_path[2]),
-        Image.open(image_list_path[3]),
+        load_image(image_list_path[0]),
+        load_image(image_list_path[1]),
+        load_image(image_list_path[2]),
+        load_image(image_list_path[3]),
     ],
     captions=ticket_list
 )
-
-print(f"{img.filename}: img.filename==================")
-
+# print(img.filename)
 filename = os.path.basename(img.filename).split(".")[0]
-print(f"{filename}: filename=================")
 resized_img = img.resize((image_width, image_height))
 
 # 이미지 선택 후 session_state에 저장
