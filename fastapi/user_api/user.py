@@ -6,7 +6,8 @@ from fastapi.responses import JSONResponse
 from common.user_validation import UserRequest
 from common.token_auth import create_access_token
 from common.db_connect import select_query, insert_query
-
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from starlette.responses import Response
 import uvicorn
 
 # 환경 변수로 호스트와 포트를 설정
@@ -21,6 +22,11 @@ async def http_exception_handler(request, exc: HTTPException):
         status_code=exc.status_code,
         content={"message": exc.detail},
     )
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
 
 # 간단한 로그인 처리 예시
 @app.post("/user")

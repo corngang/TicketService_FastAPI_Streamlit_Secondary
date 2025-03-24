@@ -8,6 +8,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from common.reservation_validation import TicketInfo, ReservationRequest
 from common.db_connect import select_query, insert_query
 from common.token_auth import decode_access_token
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from starlette.responses import Response
 
 import uvicorn
 
@@ -27,6 +29,11 @@ async def http_exception_handler(request, exc: HTTPException):
         status_code=exc.status_code,
         content={"message": exc.detail},
     )
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
 
 # 인증을 위한 의존성
 def get_current_user(credentials: HTTPAuthorizationCredentials = Security(security)):
