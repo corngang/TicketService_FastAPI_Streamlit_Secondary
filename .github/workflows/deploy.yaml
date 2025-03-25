@@ -1,4 +1,4 @@
-name: Build and Deploy to ECR
+name: Build and Deploy to EKS via ArgoCD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Build and Push Docker Images
+    name: Build, Push Docker Images & Deploy via ArgoCD
     runs-on: ubuntu-latest
 
     steps:
@@ -49,3 +49,24 @@ jobs:
             docker build -t $IMAGE_TAG $dir
             docker push $IMAGE_TAG
           done
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd-linux-amd64
+          sudo mv argocd-linux-amd64 /usr/local/bin/argocd
+
+      - name: Login to ArgoCD
+        run: |
+          argocd login ${{ secrets.ARGOCD_SERVER }} \
+            --username ${{ secrets.ARGOCD_USERNAME }} \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+            --insecure
+
+      - name: Sync ArgoCD Application
+        run: |
+          argocd app sync haoticket-app
+
+      - name: Wait for Deployment to Complete
+        run: |
+          argocd app wait haoticket-app
