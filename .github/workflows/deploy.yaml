@@ -140,3 +140,5 @@ jobs:
           kubectl rollout restart deployment reserve-api -n ${{ secrets.EKS_NAMESPACE }}
           kubectl rollout restart deployment user-api -n ${{ secrets.EKS_NAMESPACE }}
           kubectl rollout restart deployment streamlit-front -n ${{ secrets.EKS_NAMESPACE }}
+
+#####
