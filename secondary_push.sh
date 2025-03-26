@@ -6,6 +6,8 @@ git update-index --assume-unchanged manifests/
 
 # 모든 변경 사항 추가 및 커밋
 git add --all
+git reset .github/
+git reset manifests/
 git commit -m "Update files excluding .github and manifests"
 
 # secondary에 푸시
