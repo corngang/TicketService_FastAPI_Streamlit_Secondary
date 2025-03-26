@@ -17,6 +17,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Commit changes to secondary repository
+        run: |
+          git config --global user.email "wishcome@gmail.com"
+          git config --global user.name "grayscaler"
+          
+          # Add all changes except .github and manifests folder
+          git add --all
+          git reset .github
+          git reset manifests
+          
+          # Commit changes
+          git commit -m "Update images and other changes"
+          
+          # Push to secondary repository
+          git push secondary main
+
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
