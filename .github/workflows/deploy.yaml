@@ -88,15 +88,15 @@ jobs:
           echo "ECR_REPOSITORY: $ECR_REPOSITORY"
           echo "TAG: $TAG"
 
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:login-api-$TAG\"" manifests/eks-login-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:reserve-api-$TAG\"" manifests/eks-reserve-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:user-api-$TAG\"" manifests/eks-user-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:streamlit-front-$TAG\"" manifests/eks-streamlit-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:login-api-$TAG\"" manifests1/eks-login-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:reserve-api-$TAG\"" manifests1/eks-reserve-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:user-api-$TAG\"" manifests1/eks-user-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:streamlit-front-$TAG\"" manifests1/eks-streamlit-deployment.yaml
 
-          cat manifests/eks-login-deployment.yaml
-          cat manifests/eks-reserve-deployment.yaml
-          cat manifests/eks-user-deployment.yaml
-          cat manifests/eks-streamlit-deployment.yaml
+          cat manifests1/eks-login-deployment.yaml
+          cat manifests1/eks-reserve-deployment.yaml
+          cat manifests1/eks-user-deployment.yaml
+          cat manifests1/eks-streamlit-deployment.yaml
 
       - name: Commit and Push Changes
         env:
@@ -104,7 +104,7 @@ jobs:
         run: |
           git config --global user.email "wishcome@gmail.com"
           git config --global user.name "grayscaler"
-          git add manifests/
+          git add manifests1/
           git commit -m "Update image tags for deployment" || echo "No changes to commit"
 
           git pull --rebase origin main
