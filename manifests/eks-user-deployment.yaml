@@ -27,7 +27,7 @@ spec:
                       - arm64
       containers:
         - name: user
-          image: 225989344665.dkr.ecr.ap-northeast-2.amazonaws.com/hao/ticket_service:user-api-0d4c322dbb2c4f2a03777021298c8fc8ff0dc86b-20250326155839
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:user-api-3f6eeca25f7c858fcf57e2a4708ac518e2943b0f-20250401162743
           ports:
             - name: http
               containerPort: 8000
@@ -40,10 +40,9 @@ spec:
               value: "Dkagh1.!!"
             - name: PORT
               value: "8000"
-          command: ["/bin/sh", "-c"]  # 쉘을 실행해서 명령어를 이어서 실행
+          command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
           args:
             - "cd /TicketService_FastAPI_Streamlit/fastapi && python3 user_api/user.py"
-            
           imagePullPolicy: IfNotPresent
           resources:
             requests:
