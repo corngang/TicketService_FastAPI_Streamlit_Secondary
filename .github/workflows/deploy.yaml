@@ -49,6 +49,8 @@ jobs:
           echo "::set-output name=TIMESTAMP::$timestamp"
 
       - name: Build and Push Docker Image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           IMAGE_NAME="TicketService"
           IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME-$TAG"
@@ -68,6 +70,8 @@ jobs:
           git fetch origin main
 
       - name: Update YAML with new image tag
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           echo "Updating manifests with new image tags..."
           echo "ECR_REGISTRY: $ECR_REGISTRY"
