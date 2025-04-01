@@ -48,27 +48,28 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: service-config
-                  key: LOGIN_URL_$(ACTIVE_ENV)
+                  key: LOGIN_URL
             - name: USER_URL
               valueFrom:
                 configMapKeyRef:
                   name: service-config
-                  key: USER_URL_$(ACTIVE_ENV)
+                  key: USER_URL
             - name: RESERVE_URL
               valueFrom:
                 configMapKeyRef:
                   name: service-config
-                  key: RESERVE_URL_$(ACTIVE_ENV)
+                  key: RESERVE_URL
             - name: VERIFY_URL
               valueFrom:
                 configMapKeyRef:
                   name: service-config
-                  key: VERIFY_URL_$(ACTIVE_ENV)
+                  key: VERIFY_URL
             - name: TICKET_INFO_URL
               valueFrom:
                 configMapKeyRef:
                   name: service-config
-                  key: TICKET_INFO_URL_$(ACTIVE_ENV)
+                  key: TICKET_INFO_URL
+
                   #            - name: LOGIN_URL
                   #              value: "http://login-service:8000/login"
                   #            - name: USER_URL

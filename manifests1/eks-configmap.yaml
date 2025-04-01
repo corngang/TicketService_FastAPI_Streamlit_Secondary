@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-config
+  namespace: eks-app
+data:
+  ACTIVE_ENV: "blue"  # 현재 운영 중인 환경 (blue or green)
+
+  LOGIN_URL: "http://login-service:8000/login"
+  USER_URL: "http://user-service:8000/user"
+  RESERVE_URL: "http://reserve-service:8000/reserve"
+  VERIFY_URL: "http://reserve-service:8000/reserve/verify_user_info"
+  TICKET_INFO_URL: "http://reserve-service:8000/reserve/ticket"
+
+  LOGIN_URL_PREVIEW: "http://login-service-preview:8000/login"
+  USER_URL_PREVIEW: "http://user-service-preview:8000/user"
+  RESERVE_URL_PREVIEW: "http://reserve-service-preview:8000/reserve"
+  VERIFY_URL_PREVIEW: "http://reserve-service-preview:8000/reserve/verify_user_info"
+  TICKET_INFO_URL_PREVIEW: "http://reserve-service-preview:8000/reserve/ticket"
