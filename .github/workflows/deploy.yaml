@@ -13,9 +13,6 @@ jobs:
   deploy:
     name: Build, Push Docker Images & Deploy via ArgoCD
     runs-on: ubuntu-latest
-    env:
-        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-        TAG: ${{ github.sha }}-${{ env.TIMESTAMP }}
 
     steps:
       - name: Checkout repository
@@ -50,6 +47,8 @@ jobs:
       - name: Build and Push Docker Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          TAG: ${{ github.sha }}-${{ env.TIMESTAMP }}
         run: |
           IMAGE_NAME="TicketService"
           IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME-$TAG"
@@ -71,6 +70,8 @@ jobs:
       - name: Update YAML with new image tag
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          TAG: ${{ github.sha }}-${{ env.TIMESTAMP }}
         run: |
           echo "Updating manifests with new image tags..."
           echo "ECR_REGISTRY: $ECR_REGISTRY"
