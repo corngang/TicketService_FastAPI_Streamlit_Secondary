@@ -27,7 +27,7 @@ spec:
                       - arm64
       containers:
         - name: user
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-3de9a4d19d8c700b4fee9a0f48e86d0dd2367e3f-20250401164755
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-e4c039184bd93bfee69920209e3d9c79e2f93356-20250401165726
           ports:
             - name: http
               containerPort: 8000
@@ -45,7 +45,6 @@ spec:
             - |
               cd /TicketService_FastAPI_Streamlit/fastapi
               python3 user_api/user.py
-              
           imagePullPolicy: IfNotPresent
           resources:
             requests:
