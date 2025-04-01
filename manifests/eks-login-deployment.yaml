@@ -34,7 +34,7 @@ spec:
                       - arm64
       containers:
         - name: login
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:login-api-17d55c15b7a594f742f70324942b564c3e5d5ec7-20250401131737
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-caf1f7512714baf391e0463cab35ca9790e6c675-20250401171812
           ports:
             - name: http
               containerPort: 8000
@@ -50,7 +50,6 @@ spec:
           command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
           args:
             - "cd /TicketService_FastAPI_Streamlit/fastapi; python3 login_api/login.py"
-            
           imagePullPolicy: IfNotPresent
           resources:
             requests:
