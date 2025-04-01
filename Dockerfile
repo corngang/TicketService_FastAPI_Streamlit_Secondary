@@ -15,8 +15,7 @@ WORKDIR /TicketService_FastAPI_Streamlit/
 
 COPY . /TicketService_FastAPI_Streamlit/
 
-RUN ls -al /TicketService_FastAPI_Streamlit/
-
+#RUN ls -al /TicketService_FastAPI_Streamlit/
 
 # Install package from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt

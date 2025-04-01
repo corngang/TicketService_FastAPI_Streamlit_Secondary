@@ -42,7 +42,10 @@ spec:
               value: "8000"
           command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
           args:
-            - "cd /TicketService_FastAPI_Streamlit/fastapi && python3 user_api/user.py"
+            - |
+              cd /TicketService_FastAPI_Streamlit/fastapi
+              python3 user_api/user.py
+              
           imagePullPolicy: IfNotPresent
           resources:
             requests:

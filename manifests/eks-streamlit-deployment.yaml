@@ -44,7 +44,10 @@ spec:
               value: "http://reserve-service:8000/reserve/ticket"
           command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
           args:
-            - "cd /TicketService_FastAPI_Streamlit/streamlit_front && streamlit run streamlit_mono.py --server.address=0.0.0.0 --server.port=8501"
+            - |
+              cd /TicketService_FastAPI_Streamlit/streamlit_front
+              streamlit run streamlit_mono.py --server.address=0.0.0.0 --server.port=8501
+              
           imagePullPolicy: IfNotPresent
           resources:
             requests:
