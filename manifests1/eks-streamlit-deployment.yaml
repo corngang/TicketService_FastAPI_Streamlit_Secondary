@@ -89,3 +89,10 @@ spec:
               memory: "512Mi" # 최대 512MB RAM 사용
       nodeSelector:
         kubernetes.io/os: linux
+  autoscaler:
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization:
+      targetPercentage: 50
+    memoryUtilization:
+      targetPercentage: 60
