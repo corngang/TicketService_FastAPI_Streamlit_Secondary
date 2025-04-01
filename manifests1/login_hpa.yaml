@@ -30,7 +30,7 @@ spec:
       policies:
         - type: Percent
           value: 100  # 100% 확장
-          periodSeconds: 30  # 30초 내에 스케일업 100%
+          periodSeconds: 30  ### 30초 내에 스케일업 100%
     scaleDown:
       stabilizationWindowSeconds: 0  # 스케일다운 지연 시간 없애기
       selectPolicy: Min  # 최소로 스케일다운
