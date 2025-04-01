@@ -34,7 +34,7 @@ spec:
                       - arm64
       containers:
         - name: streamlit
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:streamlit-front-f551d769c5ea0356d0e75332c20e657734ec1dc4-20250401122936
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:streamlit-front-17d55c15b7a594f742f70324942b564c3e5d5ec7-20250401131737
           ports:
             - name: http
               containerPort: 8501
@@ -69,7 +69,6 @@ spec:
                 configMapKeyRef:
                   name: service-config
                   key: TICKET_INFO_URL
-
                   #            - name: LOGIN_URL
                   #              value: "http://login-service:8000/login"
                   #            - name: USER_URL
