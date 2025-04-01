@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Rollout  # kind Rollout으로 변경
+kind: Rollout # kind Rollout으로 변경
 metadata:
   name: user-api
   namespace: eks-app
@@ -34,7 +34,7 @@ spec:
                       - arm64
       containers:
         - name: user
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:user-api-b732bae935edaac3b8f7eab2ea34658aa97d245a-20250328072820
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:user-api-a94422ceac1553728476aa1befaa782eba5ba4fc-20250401112547
           ports:
             - name: http
               containerPort: 8000
