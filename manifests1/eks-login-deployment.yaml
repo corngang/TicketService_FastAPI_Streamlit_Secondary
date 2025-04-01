@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Rollout  # kind Rollout으로 변경
 metadata:
   name: login-api
   namespace: eks-app
@@ -10,11 +10,12 @@ spec:
   selector:
     matchLabels:
       app: eks-login
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+  strategy: # blueGreen 전략으로 변경
+    blueGreen:
+      activeService: login-service # blue 서비스명
+      previewService: login-service-preview # green 서비스명
+      #autoPromotioEnabled 옵션은 Blue/Green 배포를 자동으로 진행할 것인지 여부. false 옵션을 사용해 수동으로 지정
+      autoPromotionEnabled: false
   template:
     metadata:
       labels:

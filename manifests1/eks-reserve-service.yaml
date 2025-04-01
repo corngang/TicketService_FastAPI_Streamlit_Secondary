@@ -1,7 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: reserve-service
+  name: reserve-service # blue 서비스명
+  namespace: eks-app
+spec:
+  selector:
+    app: eks-reserve # 현재 activeService를 바라보도록 설정
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reserve-service-preview # # Green을 미리보기(테스트)하는 서비스
   namespace: eks-app
 spec:
   selector:
