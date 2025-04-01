@@ -44,28 +44,18 @@ jobs:
           echo "TIMESTAMP=$timestamp" >> $GITHUB_ENV
           echo "::set-output name=TIMESTAMP::$timestamp"
 
-      - name: Build and Push Docker Images
+      - name: Build and Push Docker Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          TAG: ${{ github.sha  }}-${{ env.TIMESTAMP  }}
+          TAG: ${{ github.sha }}-${{ env.TIMESTAMP }}
         run: |
-          declare -A services
-          services=(
-          ["fastapi/login_api"]="login-api"
-            ["fastapi/reserve_api"]="reserve-api"
-            ["fastapi/user_api"]="user-api"
-            ["streamlit_front"]="streamlit-front"
-          )
+          IMAGE_NAME="TicketService"
+          IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME-$TAG"
 
-          for dir in "${!services[@]}"; do
-            IMAGE_NAME=${services[$dir]}
-            IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME-$TAG"
-
-            echo "Building and pushing $IMAGE_NAME"
-            docker build --no-cache -t $IMAGE_TAG $dir
-            docker push $IMAGE_TAG
-          done
+          echo "Building and pushing $IMAGE_NAME"
+          docker build --no-cache -t $IMAGE_TAG .
+          docker push $IMAGE_TAG
 
       - name: Install yq
         run: |
@@ -88,10 +78,10 @@ jobs:
           echo "ECR_REPOSITORY: $ECR_REPOSITORY"
           echo "TAG: $TAG"
 
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:login-api-$TAG\"" manifests1/eks-login-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:reserve-api-$TAG\"" manifests1/eks-reserve-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:user-api-$TAG\"" manifests1/eks-user-deployment.yaml
-          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:streamlit-front-$TAG\"" manifests1/eks-streamlit-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:login-api-$TAG\"" manifests/eks-login-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:reserve-api-$TAG\"" manifests/eks-reserve-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:user-api-$TAG\"" manifests/eks-user-deployment.yaml
+          yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:streamlit-front-$TAG\"" manifests/eks-streamlit-deployment.yaml
 
           cat manifests1/eks-login-deployment.yaml
           cat manifests1/eks-reserve-deployment.yaml
@@ -104,7 +94,7 @@ jobs:
         run: |
           git config --global user.email "wishcome@gmail.com"
           git config --global user.name "grayscaler"
-          git add manifests1/
+          git add manifests/
           git commit -m "Update image tags for deployment" || echo "No changes to commit"
 
           git pull --rebase origin main
@@ -149,5 +139,3 @@ jobs:
           kubectl rollout restart deployment reserve-api -n ${{ secrets.EKS_NAMESPACE }}
           kubectl rollout restart deployment user-api -n ${{ secrets.EKS_NAMESPACE }}
           kubectl rollout restart deployment streamlit-front -n ${{ secrets.EKS_NAMESPACE }}
-
-########11
