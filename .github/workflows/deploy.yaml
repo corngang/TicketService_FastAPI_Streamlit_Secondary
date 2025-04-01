@@ -14,7 +14,6 @@ jobs:
     name: Build, Push Docker Images & Deploy via ArgoCD
     runs-on: ubuntu-latest
     env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         TAG: ${{ github.sha }}-${{ env.TIMESTAMP }}
 
