@@ -1,5 +1,5 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout # kind Rollout으로 변경
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: user-api
   namespace: eks-app
@@ -10,18 +10,11 @@ spec:
   selector:
     matchLabels:
       app: eks-user
-  strategy: # blueGreen 전략으로 변경
-    blueGreen:
-      activeService: user-service # blue 서비스명
-      previewService: user-service-preview # green 서비스명
-      #autoPromotioEnabled 옵션은 Blue/Green 배포를 자동으로 진행할 것인지 여부. false 옵션을 사용해 수동으로 지정
-      autoPromotionEnabled: false
   template:
     metadata:
       labels:
         app: eks-user
     spec:
-      terminationGracePeriodSeconds: 10 # 빠른 종료
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -34,17 +27,22 @@ spec:
                       - arm64
       containers:
         - name: user
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:user-api-17d55c15b7a594f742f70324942b564c3e5d5ec7-20250401131737
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-867580d57ddc2333316bc0148e2522051cd4ca5b-20250401170601
           ports:
             - name: http
               containerPort: 8000
           env:
             - name: DB_IP
-              value: "haoticketdbcluster.cluster-czs4c6g4uy8h.us-west-2.rds.amazonaws.com"
+              value: "haoticketdbcluster.cluster-ro-czs4c6g4uy8h.us-west-2.rds.amazonaws.com"
             - name: DB_USER
               value: "worker_user"
             - name: DB_PASSWD
               value: "Dkagh1.!!"
+            - name: PORT
+              value: "8000"
+          command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
+          args:
+            - "cd /TicketService_FastAPI_Streamlit/fastapi; python3 user_api/user.py"
           imagePullPolicy: IfNotPresent
           resources:
             requests:
@@ -55,10 +53,3 @@ spec:
               memory: "256Mi" # 최대 메모리 사용량
       nodeSelector:
         kubernetes.io/os: linux
-  autoscaler:
-    minReplicas: 2
-    maxReplicas: 6
-    cpuUtilization:
-      targetPercentage: 75
-    memoryUtilization:
-      targetPercentage: 60

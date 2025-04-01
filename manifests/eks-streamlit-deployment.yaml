@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout # kind Rollout으로 변경
 metadata:
   name: streamlit-front
   namespace: eks-app
@@ -10,11 +10,18 @@ spec:
   selector:
     matchLabels:
       app: eks-streamlit
+  strategy: # blueGreen 전략으로 변경
+    blueGreen:
+      activeService: streamlit-service # blue 서비스명
+      previewService: streamlit-service-preview # green 서비스명
+      #autoPromotioEnabled 옵션은 Blue/Green 배포를 자동으로 진행할 것인지 여부. false 옵션을 사용해 수동으로 지정
+      autoPromotionEnabled: false
   template:
     metadata:
       labels:
         app: eks-streamlit
     spec:
+      terminationGracePeriodSeconds: 10 # 빠른 종료
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -27,21 +34,51 @@ spec:
                       - arm64
       containers:
         - name: streamlit
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-867580d57ddc2333316bc0148e2522051cd4ca5b-20250401170601
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:streamlit-front-17d55c15b7a594f742f70324942b564c3e5d5ec7-20250401131737
           ports:
             - name: http
               containerPort: 8501
           env:
+            - name: ACTIVE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: ACTIVE_ENV
             - name: LOGIN_URL
-              value: "http://login-service:8000/login"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: LOGIN_URL
             - name: USER_URL
-              value: "http://user-service:8000/user"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: USER_URL
             - name: RESERVE_URL
-              value: "http://reserve-service:8000/reserve"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: RESERVE_URL
             - name: VERIFY_URL
-              value: "http://reserve-service:8000/reserve/verify_user_info"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: VERIFY_URL
             - name: TICKET_INFO_URL
-              value: "http://reserve-service:8000/reserve/ticket"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: TICKET_INFO_URL
+                  #            - name: LOGIN_URL
+                  #              value: "http://login-service:8000/login"
+                  #            - name: USER_URL
+                  #              value: "http://user-service:8000/user"
+                  #            - name: RESERVE_URL
+                  #              value: "http://reserve-service:8000/reserve"
+                  #            - name: VERIFY_URL
+                  #              value: "http://reserve-service:8000/reserve/verify_user_info"
+                  #            - name: TICKET_INFO_URL
+                  #              value: "http://reserve-service:8000/reserve/ticket"
           command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
           args:
             - "cd /TicketService_FastAPI_Streamlit/streamlit_front; streamlit run streamlit_mono.py --server.address=0.0.0.0 --server.port=8501"
@@ -55,3 +92,10 @@ spec:
               memory: "512Mi" # 최대 512MB RAM 사용
       nodeSelector:
         kubernetes.io/os: linux
+  autoscaler:
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization:
+      targetPercentage: 50
+    memoryUtilization:
+      targetPercentage: 60

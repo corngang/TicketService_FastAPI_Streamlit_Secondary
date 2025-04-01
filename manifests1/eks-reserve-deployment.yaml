@@ -1,5 +1,5 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout # kind Rollout으로 변경
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: reserve-api
   namespace: eks-app
@@ -10,18 +10,11 @@ spec:
   selector:
     matchLabels:
       app: eks-reserve
-  strategy: # blueGreen 전략으로 변경
-    blueGreen:
-      activeService: reserve-service # blue 서비스명
-      previewService: reserve-service-preview # green 서비스명
-      #autoPromotioEnabled 옵션은 Blue/Green 배포를 자동으로 진행할 것인지 여부. false 옵션을 사용해 수동으로 지정
-      autoPromotionEnabled: false
   template:
     metadata:
       labels:
         app: eks-reserve
     spec:
-      terminationGracePeriodSeconds: 10 # 빠른 종료
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -34,31 +27,29 @@ spec:
                       - arm64
       containers:
         - name: reserve
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:reserve-api-17d55c15b7a594f742f70324942b564c3e5d5ec7-20250401131737
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-867580d57ddc2333316bc0148e2522051cd4ca5b-20250401170601
           ports:
             - name: http
               containerPort: 8000
           env:
             - name: DB_IP
-              value: "haoticketdbcluster.cluster-czs4c6g4uy8h.us-west-2.rds.amazonaws.com"
+              value: "haoticketdbcluster.cluster-ro-czs4c6g4uy8h.us-west-2.rds.amazonaws.com"
             - name: DB_USER
               value: "worker_user"
             - name: DB_PASSWD
               value: "Dkagh1.!!"
+            - name: PORT
+              value: "8000"
+          command: ["/bin/sh", "-c"] # 쉘을 실행해서 명령어를 이어서 실행
+          args:
+            - "cd /TicketService_FastAPI_Streamlit/fastapi; python3 reserve_api/reserve.py"
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              cpu: "250m"
-              memory: "512Mi"
+              cpu: "250m" # 최소 CPU 요청 (250m = 0.25 vCPU)
+              memory: "512Mi" # 최소 메모리 요청
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: "1" # 최대 CPU 사용량 (1 vCPU)
+              memory: "1Gi" # 최대 메모리 사용량
       nodeSelector:
         kubernetes.io/os: linux
-  autoscaler:
-    minReplicas: 3
-    maxReplicas: 15
-    cpuUtilization:
-      targetPercentage: 65
-    memoryUtilization:
-      targetPercentage: 70

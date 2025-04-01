@@ -1,21 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service # blue 서비스명
-  namespace: eks-app
-spec:
-  selector:
-    app: eks-user # 현재 activeService를 바라보도록 설정
-  ports:
-    - protocol: TCP
-      port: 8000
-      targetPort: 8000
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-service-preview # Green을 미리보기(테스트)하는 서비스
+  name: user-service
   namespace: eks-app
 spec:
   selector:
