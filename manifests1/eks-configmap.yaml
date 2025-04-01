@@ -4,7 +4,7 @@ metadata:
   name: service-config
   namespace: eks-app
 data:
-  ACTIVE_ENV: "blue"  # 현재 운영 중인 환경 (blue or green)
+  ACTIVE_ENV: "blue"  ##### 현재 운영 중인 환경 (blue or green)
 
   LOGIN_URL: "http://login-service:8000/login"
   USER_URL: "http://user-service:8000/user"
