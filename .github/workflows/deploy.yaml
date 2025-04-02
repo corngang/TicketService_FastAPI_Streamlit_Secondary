@@ -117,6 +117,10 @@ jobs:
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
 
+      - name: Verify Argo Rollouts CRD in CI/CD
+        run: |
+          kubectl get crds | grep rollouts || (echo "Argo Rollouts CRD is missing!" && exit 1)
+  
       - name: Ensure no ongoing sync
         run: |
           while argocd app get haoticket-app | grep -q "Sync: In Progress"; do
