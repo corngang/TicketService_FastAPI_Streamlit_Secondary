@@ -105,6 +105,10 @@ jobs:
           curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
           chmod +x argocd-linux-amd64
           sudo mv argocd-linux-amd64 /usr/local/bin/argocd
+          curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+          chmod +x ./kubectl-argo-rollouts-linux-amd64
+          sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+          kubectl argo rollouts version
 
       - name: Login to ArgoCD
         run: |
