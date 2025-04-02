@@ -60,10 +60,10 @@ spec:
               memory: "256Mi" # 최대 메모리 사용량
       nodeSelector:
         kubernetes.io/os: linux
-  autoscaler:
-    minReplicas: 3
-    maxReplicas: 15
-    cpuUtilization:
-      targetPercentage: 60
-    memoryUtilization:
-      targetPercentage: 55
+#  autoscaler:
+#    minReplicas: 3
+#    maxReplicas: 15
+#    cpuUtilization:
+#      targetPercentage: 60
+#    memoryUtilization:
+#      targetPercentage: 55
