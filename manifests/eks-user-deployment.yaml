@@ -54,10 +54,10 @@ spec:
           resources:
             requests:
               cpu: "100m" # 최소 CPU 요청 (100m = 0.1 vCPU)
-              memory: "128Mi" # 최소 메모리 요청
+              memory: "512Mi" # 최소 메모리 요청
             limits:
               cpu: "500m" # 최대 CPU 사용량 (0.5 vCPU)
-              memory: "256Mi" # 최대 메모리 사용량
+              memory: "1Gi" # 최대 메모리 사용량
       nodeSelector:
         kubernetes.io/os: linux
 #  autoscaler:

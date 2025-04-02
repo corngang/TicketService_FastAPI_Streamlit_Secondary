@@ -86,10 +86,10 @@ spec:
           resources:
             requests:
               cpu: "200m" # 최소 0.2 vCPU 사용
-              memory: "512Mi" # 최소 256MB RAM 사용
+              memory: "1Gi" # 최소 256MB RAM 사용
             limits:
               cpu: "500m" # 최대 0.5 vCPU 사용
-              memory: "1Gi" # 최대 512MB RAM 사용
+              memory: "2Gi" # 최대 512MB RAM 사용
       nodeSelector:
         kubernetes.io/os: linux
 #  autoscaler:
