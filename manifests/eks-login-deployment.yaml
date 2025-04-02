@@ -34,7 +34,7 @@ spec:
                       - arm64
       containers:
         - name: login
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-caf1f7512714baf391e0463cab35ca9790e6c675-20250401171812
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-771b102831cddab5b303e6339c2ef42b96dad277-20250402023226
           ports:
             - name: http
               containerPort: 8000
