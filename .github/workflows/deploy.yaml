@@ -83,10 +83,10 @@ jobs:
           yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:TicketService-$TAG\"" manifests/eks-user-deployment.yaml
           yq eval -i ".spec.template.spec.containers[0].image = \"$ECR_REGISTRY/$ECR_REPOSITORY:TicketService-$TAG\"" manifests/eks-streamlit-deployment.yaml
 
-          cat manifests1/eks-login-deployment.yaml
-          cat manifests1/eks-reserve-deployment.yaml
-          cat manifests1/eks-user-deployment.yaml
-          cat manifests1/eks-streamlit-deployment.yaml
+          cat manifests/eks-login-deployment.yaml
+          cat manifests/eks-reserve-deployment.yaml
+          cat manifests/eks-user-deployment.yaml
+          cat manifests/eks-streamlit-deployment.yaml
 
       - name: Commit and Push Changes
         env:
@@ -137,9 +137,9 @@ jobs:
         run: |
           argocd app wait haoticket-app
 
-      - name: Restart Kubernetes Deployment
+      - name: Restart Argo Rollouts
         run: |
-          kubectl rollout restart deployment login-api -n ${{ secrets.EKS_NAMESPACE }}
-          kubectl rollout restart deployment reserve-api -n ${{ secrets.EKS_NAMESPACE }}
-          kubectl rollout restart deployment user-api -n ${{ secrets.EKS_NAMESPACE }}
-          kubectl rollout restart deployment streamlit-front -n ${{ secrets.EKS_NAMESPACE }}
+          kubectl argo rollouts restart login-api -n ${{ secrets.EKS_NAMESPACE }}
+          kubectl argo rollouts restart reserve-api -n ${{ secrets.EKS_NAMESPACE }}
+          kubectl argo rollouts restart user-api -n ${{ secrets.EKS_NAMESPACE }}
+          kubectl argo rollouts restart streamlit-front -n ${{ secrets.EKS_NAMESPACE }}
