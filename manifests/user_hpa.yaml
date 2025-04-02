@@ -5,7 +5,7 @@ metadata:
   namespace: eks-app  # 수정된 네임스페이스
 spec:
   scaleTargetRef:
-    apiVersion: aargoproj.io/v1alpha1
+    apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: user-api
   minReplicas: 2  # 최소 파드 수
