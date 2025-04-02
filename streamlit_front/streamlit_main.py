@@ -8,10 +8,13 @@ from prometheus_client import start_http_server, Summary
 import time
 
 # 이미지 파일 로딩을 캐시하기
-@st.cache_resource
+@st.cache_data
 def load_image(image_path):
-    return Image.open(image_path)
-
+    try:
+        return Image.open(image_path)
+    except Exception as e:
+        st.error(f"이미지를 불러올 수 없습니다. {e}")
+        return None
 
 def stream_data(filename):
     file_dict = {"2NE1": ne1, "IU": iu, "KimJaeJoong": KimJaeJoong, "IMHero": Imhero}
