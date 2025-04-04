@@ -34,7 +34,7 @@ spec:
                       - arm64
       containers:
         - name: streamlit
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-66db78216bd27c3a6cac5e2baa06703d20ec6692-20250404113133
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-a7d9935d0610b9cbdf2e86504eb019a8db528b95-20250404120746
           ports:
             - name: http
               containerPort: 8501
