@@ -8,8 +8,8 @@ spec:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: login-api
-  minReplicas: 9  # 최소 파드 수
-  maxReplicas: 15  # 최대 파드 수
+  minReplicas: 25  # 최소 파드 수
+  maxReplicas: 100  # 최대 파드 수
   metrics:
     - type: Resource
       resource:
@@ -29,8 +29,8 @@ spec:
       selectPolicy: Max
       policies:
         - type: Percent
-          value: 100
-          periodSeconds: 30
+          value: 200
+          periodSeconds: 15
     scaleDown:
       stabilizationWindowSeconds: 30  # 60초 동안 유지되면 스케일다운 (기본값은 300초)
       selectPolicy: Min
