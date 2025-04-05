@@ -33,7 +33,7 @@ spec:
                       - arm64
       containers:
         - name: reserve
-          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-fae157624a6936eb4cfff8c59d0814249480f95e-20250405203211
+          image: 225989344665.dkr.ecr.us-west-2.amazonaws.com/hao/ticket_service:TicketService-e65a914991f9ed5326480270292888bf254250a8-20250405212726
           ports:
             - name: http
               containerPort: 8000
