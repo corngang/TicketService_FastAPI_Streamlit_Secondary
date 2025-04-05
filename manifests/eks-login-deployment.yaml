@@ -6,7 +6,6 @@ metadata:
   labels:
     app: eks-login
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: eks-login

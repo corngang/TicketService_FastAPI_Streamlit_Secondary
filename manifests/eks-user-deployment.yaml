@@ -6,7 +6,6 @@ metadata:
   labels:
     app: eks-user
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: eks-user
