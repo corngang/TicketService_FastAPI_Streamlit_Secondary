@@ -52,7 +52,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              cpu: "1000m" # 최소 CPU 요청 (100m = 0.1 vCPU)
+              cpu: "1100m" # 최소 CPU 요청 (100m = 0.1 vCPU)
               memory: "512Mi" # 최소 메모리 요청
             limits:
               cpu: "2000m" # 최대 CPU 사용량 (0.5 vCPU)

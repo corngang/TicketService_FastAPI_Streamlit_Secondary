@@ -72,7 +72,7 @@ with col4:
     """
     <style>
     .stButton>button {
-        background-color: #FF0000;
+        background-color: #000000;
         font-size: 30px;
         padding: 10px 20px;
         border-radius: 10px;

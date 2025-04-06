@@ -16,7 +16,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60  # CPU 사용량 70% 초과 시 스케일업
+          averageUtilization: 30  # CPU 사용량 70% 초과 시 스케일업
     - type: Resource
       resource:
         name: memory
