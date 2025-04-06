@@ -8,8 +8,8 @@ spec:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: login-api
-  minReplicas: 10  # 최소 파드 수
-  maxReplicas: 15  # 최대 파드 수
+  minReplicas: 3  # 최소 파드 수
+  maxReplicas: 10  # 최대 파드 수
   metrics:
     - type: Resource
       resource:
